@@ -82,7 +82,7 @@ n134 <- intersect(n13,area4, by="ContigID")
 n135 <- intersect(n13,area5, by="ContigID")
 n145 <- intersect(n14,area5, by="ContigID")
 n234 <- intersect(n23,area4, by="ContigID")
-n235 <- intersect(n23,area4, by="ContigID")
+n235 <- intersect(n23,area5, by="ContigID")
 n245 <- intersect(n24,area5, by="ContigID")
 n345 <- intersect(n34,area5, by="ContigID")
 
