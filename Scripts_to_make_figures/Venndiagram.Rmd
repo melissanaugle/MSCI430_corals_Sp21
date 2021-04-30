@@ -5,7 +5,9 @@ date: "3/25/2021"
 output: html_document
 ---
 
-1. Set WD, load packages
+##For MSCI430 Class
+
+#1. Set WD, load packages
 
 ```{r setup}
 setwd(dir = "~/Desktop/GitHub/MSCI430_corals_Sp21/")
@@ -18,7 +20,7 @@ library(VennDiagram)
 library(dplyr)
 ```
 
-2. Read in data files
+#2. Read in data files
 
 Here I have files with DEGs between control and treatment at each of the 5 sites
 Could change these to to just look at upregulated or downregulated, or to a diff p value
@@ -92,6 +94,9 @@ n1245 <- intersect(n124,area5, by="ContigID")
 n1345 <- intersect(n134,area5, by="ContigID")
 n2345 <- intersect(n234,area5, by="ContigID")
 n12345 <- intersect(n1234,area5, by-"ContigID")
+
+write.csv(n12345, "../data/DE_middle_of_venn_classic_FDR0.05.csv", row.names = F)
+
 ```
 
 #4. Make Venn Diagrams
@@ -114,7 +119,7 @@ venn.plot <- draw.triple.venn(
   area1 = nrow(area1), area2 = nrow(area2), area3 = nrow(area3), 
   n12 = nrow(n12), n13 = nrow(n13), n23 = nrow(n23), n123 = nrow(n123), 
   #make sure this is in the correct order
-  category = c("Coconut Point", "Faga'alu", "Faga'tele"), 
+  category = c("Cannery", "Coconut Point", "Faga'alu"), 
   #choose colors
   fill = c("skyblue", "mediumorchid", "salmon"), 
   #change line type (this means no line)
@@ -159,5 +164,25 @@ grid.draw(venn.plot)
 dev.off()
 
 ```
+```{r venn_barshis_genes}
+barshisgenes <- read.csv("../barshis2012_DElist.csv", skip = 4)
+head(barshisgenes)
+barshisgenes$ContigID <- barshisgenes$Ourcontigname
+nrow(barshisgenes)
+nrow(n12345)
+
+shared <- subset(barshisgenes, ContigID %in% n12345$ContigID)
+
+venn.plot <- draw.pairwise.venn(area1 = nrow(barshisgenes), area2 = nrow(n12345), cross.area = nrow(shared), category = c("Barshis genes", "Our genes"), fill = c("salmon", "skyblue"), lty = 1, cat.cex = 1.2, cat.pos = 1, cex = 3)
+
+
+#Save the  Venn diagram
+grid.newpage()
+png("../Figures/venn_controlvheat_5sites_P0.05_barshisshared_allheatvcontrol_middleofvenn.png")
+grid.draw(venn.plot)
+dev.off()
+```
+
+
 
 
